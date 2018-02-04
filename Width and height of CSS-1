@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  <style>
+  div {
+    border: 1px solid red;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  </style>
+</head>
+<body>
+  <div>
+    CSS Reset：我们可以把它叫做CSS重设，也有人叫做CSS复位、默认CSS、CSS重置等。重设就是由于各种浏览器解释CSS样式的初始值有所不同，导致设计师在没有定义某个CSS属性时，不同的浏览器会按照自己的默认值来为没有定义的样式赋值，所以我们要先定义好一些CSS样式，来让所有浏览器都按照同样的规则解释CSS，这样就能避免发生这种问题。
+  </div>
+</body>
+</html>
