@@ -88,3 +88,20 @@ http://js.jirengu.com/suvip/1/edit
 
 ## 四、简易画板（可连续画线）
 http://js.jirengu.com/gebeb/1/edit?html,js,output
+
+## 五、优化功能：全屏
+var pageWidth = document.documentElement.clientWidth
+var pageHeight = document.documentElement.clientHeight //背下来这两句求页面宽高(IE不支持)
+
+yyy.width = pageWidth
+yyy.height = pageHeight
+
+//防止用户改变窗口宽高，故监听
+window.onresize = function(){
+  var pageWidth = document.documentElement.clientWidth
+  var pageHeight = document.documentElement.clientHeight //背下来这两句求页面宽高(IE不支持)
+
+  yyy.width = pageWidth
+  yyy.height = pageHeight
+}
+ 代码预览：http://js.jirengu.com/vikak/1/edit?html,js,output
