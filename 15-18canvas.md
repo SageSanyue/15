@@ -107,3 +107,117 @@ window.onresize = function(){
 }
 ```
  代码预览：http://js.jirengu.com/vikak/1/edit?html,js,output
+## 六、优化功能：增加橡皮擦功能
+```
+var yyy = document.getElementById('xxx')
+
+userResize()
+window.onresize = function(){
+  userResize()
+}
+function userResize(){
+  var pageWidth = document.documentElement.clientWidth
+  var pageHeight = document.documentElement.clientHeight //背下来这两句求页面宽高(IE不支持)
+
+  yyy.width = pageWidth
+  yyy.height = pageHeight
+}
+
+var context = yyy.getContext('2d')
+/*var painting = false //改名叫using*/
+var using = false
+var lastPoint = {x:undefined,y:undefined}
+yyy.onmousedown = function(aaa){
+var x = aaa.clientX 
+  var y = aaa.clientY
+  if(eraserEnabled){
+    using = true
+    context.clearRect(x-5,y-5,10,10)//矩形是把做左上角当起点画，故要减去一点才是矩形中间
+  }else{
+    using = true
+    lastPoint = {"x":x,"y":y}
+  }
+}
+yyy.onmousemove = function(aaa){
+var x = aaa.clientX
+  var y = aaa.clientY
+  if(eraserEnabled){
+    if(using){
+    context.clearRect(x,y,10,10)
+    }
+  }else{
+    if(using){
+      var newPoint = {"x":x,"y":y}
+      drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
+      lastPoint = newPoint
+    }
+  }
+
+}
+yyy.onmouseup = function(aaa){
+  using = false
+}
+function drawLine(x1,y1,x2,y2){
+  context.beginPath()
+  context.strokeStyle = 'black'
+  context.moveTo(x1,y1) //起点 
+  context.lineWidth = 3
+  context.lineTo(x2,y2)  //终点
+  context.stroke()
+  context.closePath()
+}
+var eraserEnabled = false
+ eraser.onclick = function(){
+   eraserEnabled = !eraserEnabled
+ }
+ ```
+ 代码预览:http://js.jirengu.com/boveq/1/edit?html,js,output
+ 
+  优化结构：
+  http://js.jirengu.com/rihux/1/edit?html,js,output
+##  七、再次优化函数结构+橡皮擦使用状态显示
+```
+ var eraserEnabled = false
+ eraser.onclick = function(){
+   eraserEnabled = !eraserEnabled
+   if(eraserEnabled){
+     eraser.textContent = '画笔'
+   }else{
+     eraser.textContent = '橡皮擦'
+   }
+ }
+```
+代码预览:http://js.jirengu.com/capen/1/edit?html,js,output
+但以上一个按钮做了两件事，应该改为一个按钮只有一个功能,这样就走正常流程而不用有if-else结构。如下：
+```
+<div id=actions class="actions">
+<button id=eraser>橡皮擦</button>
+<button id=brush>画笔</button>
+</div>
+
+button{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+.actions > #brush{
+  display: none;
+}
+.actions.x > #brush{
+  display: inline-block;
+}
+.actions.x > #eraser{
+  display: none;
+}
+
+eraser.onclick = function(){
+   eraserEnabled = true
+   actions.className = 'actions x'
+ }
+ brush.onclick = function(){
+   eraserEnabled = false
+   actions.className = 'actions'
+ }
+```
+代码预览：http://js.jirengu.com/cupil/1/edit?html,css,js,output
+
