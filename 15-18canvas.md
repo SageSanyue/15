@@ -85,3 +85,6 @@ context.stroke()     //6步顺序不可乱
 context.closePath()
 ```
 http://js.jirengu.com/suvip/1/edit
+
+## 四、简易画板（可连续画线）
+http://js.jirengu.com/gebeb/1/edit?html,js,output
