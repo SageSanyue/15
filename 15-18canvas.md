@@ -74,3 +74,14 @@ context.arc(10,200,50,0,2)
 context.stroke()   //只描边
 ```
 http://js.jirengu.com/kopen/1/edit?html,css,js,output
+## 三、canvas 画直线
+```
+var context = xxx.getContext('2d')
+context.beginPath()
+context.moveTo(0,0)
+context.lineWidth = 5
+context.lineTo(200,0)
+context.stroke()     //6步顺序不可乱
+context.closePath()
+```
+http://js.jirengu.com/suvip/1/edit
