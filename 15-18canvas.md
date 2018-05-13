@@ -90,6 +90,7 @@ http://js.jirengu.com/suvip/1/edit
 http://js.jirengu.com/gebeb/1/edit?html,js,output
 
 ## 五、优化功能：全屏
+```
 var pageWidth = document.documentElement.clientWidth
 var pageHeight = document.documentElement.clientHeight //背下来这两句求页面宽高(IE不支持)
 
@@ -104,4 +105,5 @@ window.onresize = function(){
   yyy.width = pageWidth
   yyy.height = pageHeight
 }
+```
  代码预览：http://js.jirengu.com/vikak/1/edit?html,js,output
