@@ -294,3 +294,94 @@ function listenToUser(canvas){
 ```
 代码链接：http://js.jirengu.com/dimaj/2/edit?html,js  
 (注：手机端适应的调试模拟必须将代码放在本地编辑器然后浏览器调试，而不可直接使用jsbin)
+##  九、增加选色功能
+```
+<canvas id="xxx" width=300 height=300></canvas>
+    <div id=actions class="actions">
+        <span><i>Sage's</i> Canvas</span>
+        <svg id=pen class="active icon">
+            <use xlink:href="#icon-pen"></use>
+        </svg>
+        <svg id=eraser class="icon">
+            <use xlink:href="#icon-eraser"></use>
+        </svg>
+        <svg id=save class="icon">
+            <use xlink:href="#icon-save"></use>
+        </svg>
+
+       <!-- <button id=eraser>橡皮擦</button>
+        <button id=brush>画笔</button>-->
+    </div>
+    <ol class="colors">
+        <li id=red class="red"></li>
+        <li id=yellow class="yellow"></li>
+        <li id=blue class="blue"></li>
+        <li id=black class="black"></li>
+    </ol>
+    <div class="divide"><hr></div>
+
+/***********换颜色****************************/
+red.onclick = function(){
+    context.strokeStyle = 'red'
+    red.classList.add('active')
+    yellow.classList.remove('active')
+    blue.classList.remove('active')
+    black.classList.remove('active')
+}
+yellow.onclick = function(){
+    context.strokeStyle = 'yellow'
+    yellow.classList.add('active')
+    red.classList.remove('active')
+    blue.classList.remove('active')
+    black.classList.remove('active')
+}
+blue.onclick = function(){
+    context.strokeStyle = 'blue'
+    blue.classList.add('active')
+    red.classList.remove('active')
+    yellow.classList.remove('active')
+    black.classList.remove('active')
+}
+black.onclick = function(){
+    context.strokeStyle = 'black'
+    black.classList.add('active')
+    red.classList.remove('active')
+    yellow.classList.remove('active')
+    blue.classList.remove('active')
+}
+/********************************************/
+    ol{
+        list-style: none;
+    }
+    .colors{
+        position: fixed;
+        top: 72px;
+        left: 10px;
+    }
+    .colors > li{
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ddd;
+        border-radius: 50%;
+        box-shadow: 0 0 3px rgba(0,0,0,0.15);
+        margin: 10px 0;
+        transition: all 0.3s;
+    }
+    .colors > li.red{
+        background: red;
+    }
+    .colors > li.yellow{
+        background: yellow;
+    }
+    .colors > li.blue{
+        background: blue;
+    }
+    .colors > li.black{
+        background: #000;
+    }
+    .colors > li.active{
+        box-shadow: 0 0 3px rgba(0,0,0,0.95);
+        transform: scale(1.2);
+    }
+```
+代码预览：http://js.jirengu.com/nosur/1/edit?html,js 
