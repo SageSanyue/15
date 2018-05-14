@@ -385,3 +385,77 @@ black.onclick = function(){
     }
 ```
 代码预览：http://js.jirengu.com/nosur/1/edit?html,js 
+## 十、增加选画笔粗细功能
+```
+.sizes li{
+    margin: 3px 3px;
+}
+.sizes .thin{
+    height: 0;
+    width: 40px;
+    border-top: 2px solid black;
+}
+.sizes .thick{
+    height: 0;
+    width: 45px;
+    border-top: 7px solid black;
+}
+```
+```
+<div class="fontweight clearfix">
+        <ol class="sizes">
+            <li id="thin" class="thin"></li>
+            <li id="thick" class="thick"></li>
+        </ol>
+</div>
+```
+```
+var lineWidth = 4
+
+function drawLine(x1,y1,x2,y2){
+    context.beginPath()
+    //context.strokeStyle = 'black'
+    context.moveTo(x1,y1) //起点 
+    //context.lineWidth = 3
+    context.lineWidth = lineWidth
+    context.lineTo(x2,y2)  //终点
+    context.stroke()
+    context.closePath()
+}
+/***************** 自选线体粗细*****************/
+thin.onclick = function(){
+    lineWidth = 2
+}
+thick.onclick = function(){
+    lineWidth = 7
+}
+/********************************************/
+```
+代码预览：https://jsbin.com/luqezi/edit?html,css,js,output
+## 十一、增加清屏功能
+```
+/****************清屏功能**********************/
+clear.onclick = function(){
+    context.clearRect(0,0,yyy.width,yyy.height)
+}
+/********************************************/
+<svg id=clear class="icon">
+    <use xlink:href="#icon-bin"></use>
+</svg>
+```
+## 十二、增加保存功能
+```
+/*************保存到本地的功能******************/
+save.onclick = function(){
+    var url = yyy.toDataURL("image/png")
+    //console.log(url) //调试时可以看到是该文件的字符信息
+    var a = document.createElement('a')
+    document.body.appendChild(a)
+    a.href = url
+    a.download = '我的图画'
+    a.target = '_blank'
+    a.click()
+}
+/********************************************/
+```
+代码预览：https://jsbin.com/giraxuz/edit?html,js,output
