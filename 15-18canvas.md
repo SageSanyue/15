@@ -220,4 +220,73 @@ eraser.onclick = function(){
  }
 ```
 代码预览：http://js.jirengu.com/cupil/1/edit?html,css,js,output
-
+##  八、适应移动端
+.onmousemove事件在手机屏幕失效，故需改用.ontouchmove事件
+手指事件：canvas.ontouchstart = funcion(){}  canvas.ontouchmove = function(){} canvas.ontouchend = function(){}
+```
+function listenToUser(canvas){
+    var using = false
+    var lastPoint = {x:undefined,y:undefined}
+    if(document.body.ontouchstart !== undefined){
+      //触屏设备
+      canvas.ontouchstart = function(aaa){
+        var x = aaa.touches[0].clientX
+        var y = aaa.touches[0].clientY
+        console.log(x.y)
+        using = true
+        if(eraserEnabled){
+          context.clearRect(x-5,y-5,10,10)
+        }else{
+          lastPoint = {"x":x,"y":y}
+        }
+      }
+      canvas.ontouchmove = function(aaa){
+        console.log('边摸边动')
+        var x = aaa.touches[0].clientX
+        var y = aaa.touches[0].clientY
+        if(!using){return}
+        if(eraserEnabled){
+          context.clearRect(x-5,y-5,10,10)
+        }else{
+          var newPoint = {"x":x,"y":y}
+          drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
+          lastPoint = newPoint
+        }
+      }
+      canvas.ontouchend = function(){
+        console.log('摸完了')
+        using = false
+      }
+    }else{
+      //非触屏设备
+    canvas.onmousedown = function(aaa){
+    var x = aaa.clientX 
+    var y = aaa.clientY
+    using = true
+    if(eraserEnabled){
+      context.clearRect(x-5,y-5,10,10)//矩形是把做左上角当起点画，故要减去一点才是矩形中间
+    }else{
+      lastPoint = {"x":x,"y":y}
+    }
+   }
+  
+   canvas.onmousemove = function(aaa){
+    var x = aaa.clientX
+    var y = aaa.clientY
+    if(!using){return}
+    if(eraserEnabled){
+      context.clearRect(x,y,10,10)
+    }else{
+        var newPoint = {"x":x,"y":y}
+        drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
+        lastPoint = newPoint
+    }
+  }
+  
+   canvas.onmouseup = function(aaa){
+    using = false
+   }
+   }
+  }
+```
+代码链接：http://js.jirengu.com/dimaj/2/edit?html,js    (注：手机端适应的调试模拟必须将代码放在本地编辑器然后浏览器调试，而不可直接使用jsbin)
