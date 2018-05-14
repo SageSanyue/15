@@ -221,15 +221,18 @@ eraser.onclick = function(){
 ```
 代码预览：http://js.jirengu.com/cupil/1/edit?html,css,js,output
 ##  八、适应移动端
-.onmousemove事件在手机屏幕失效，故需改用.ontouchmove事件
+.onmousemove事件在手机屏幕失效，故需改用.ontouchmove事件  
 手指事件：canvas.ontouchstart = funcion(){}  canvas.ontouchmove = function(){} canvas.ontouchend = function(){}
 ```
 function listenToUser(canvas){
     var using = false
     var lastPoint = {x:undefined,y:undefined}
+
+    //特性检测
     if(document.body.ontouchstart !== undefined){
       //触屏设备
       canvas.ontouchstart = function(aaa){
+        //console.log(aaa)  //可以看到TouchEvent的hash里有touches的数组，[0]表示屏幕上第一个触摸的点
         var x = aaa.touches[0].clientX
         var y = aaa.touches[0].clientY
         console.log(x.y)
@@ -241,7 +244,7 @@ function listenToUser(canvas){
         }
       }
       canvas.ontouchmove = function(aaa){
-        console.log('边摸边动')
+        //console.log('边摸边动')
         var x = aaa.touches[0].clientX
         var y = aaa.touches[0].clientY
         if(!using){return}
@@ -289,4 +292,5 @@ function listenToUser(canvas){
    }
   }
 ```
-代码链接：http://js.jirengu.com/dimaj/2/edit?html,js    (注：手机端适应的调试模拟必须将代码放在本地编辑器然后浏览器调试，而不可直接使用jsbin)
+代码链接：http://js.jirengu.com/dimaj/2/edit?html,js  
+(注：手机端适应的调试模拟必须将代码放在本地编辑器然后浏览器调试，而不可直接使用jsbin)
