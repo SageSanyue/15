@@ -357,3 +357,49 @@ var tween = new TWEEN.Tween(coords)
 
 ```
 滑动到相应章节页面顶部sticky的相应NavBar选项被点亮，功能实现；但是出现了二级菜单随之自动冒出的BUG 
+5.解决BUG
+鼠标滚动带来的active使NavBar对应项高亮与鼠标在其上移入移除对应高亮的两个效果冲突，解决办法：换名
+```
+            window.onscroll = function(x){
+                if(window.scrollY > 0){
+                    topNavBar.classList.add('sticky')
+                }else{
+                    topNavBar.classList.remove('sticky')
+                }
+                let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的任意标签
+                let minIndex = 0
+                for(let i=0;i<specialTags.length;i++){
+                    if(Math.abs(specialTags[i].offsetTop - window.scrollY) < Math.abs(specialTags[minIndex].offsetTop - window.scrollY)){
+                        minIndex = i
+                    }
+                  }
+              let id = specialTags[minIndex].id
+              let a = document.querySelector('a[href="#' + id + '"]')  //例如id=='siteAbout',则对应的a标签'a[href="#siteAbout"]'
+              let li = a.parentNode
+              let brothersAndMe = li.parentNode.children
+                for(let i=0;i<brothersAndMe.length;i++){
+                    //brothersAndMe[i].classList.remove('active')
+                    brothersAndMe[i].classList.remove('highlight')
+                }
+                //li.classList.add('active')
+                li.classList.add('highlight')
+             }
+```
+对应CSS 变化
+```
+/*.topNavBar nav > ul > li.active > a::after{  */
+.topNavBar nav > ul > li.active > a::after,
+.topNavBar nav > ul > li.highlight > a::after{
+    content:'';
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #f94a5e;
+    width: 100%;
+    height: 3px;
+    animation: menuSlide .3s;
+}
+```
+## 让所有章节都从下往上显现
+1.
