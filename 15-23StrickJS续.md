@@ -523,3 +523,24 @@ var tween = new TWEEN.Tween(coords)
               
 ```
 ## 技能部分进度条动态显示
+```
+section.skills .progressBar {
+    height: 5px;
+    background: #fae1e1;
+    border-radius: 2px;
+    margin: 4px 0 40px;
+    overflow: hidden;
+}
+section.skills .progressBar > .progress {
+    height: 100%;
+    background: #e6686a;
+    border-radius: 2px;
+    width: 70%;
+    transform: translateX(0);
+    transition: all 1s;
+}
+
+section.skills.offset.progress{
+    transform: translateX(-100%);
+}
+```
