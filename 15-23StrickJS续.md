@@ -403,3 +403,123 @@ var tween = new TWEEN.Tween(coords)
 ```
 ## 让所有章节都从下往上显现
 1.
+```
+                let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的任意标签
+                let minIndex = 0
+                for(let i=0;i<specialTags.length;i++){
+                    if(Math.abs(specialTags[i].offsetTop - window.scrollY) < Math.abs(specialTags[minIndex].offsetTop - window.scrollY)){
+                        minIndex = i
+                    }
+                 }//minIndex就是离窗口顶部最近的元素
+                 specialTags[minIndex].classList.add('animate')
+                 
+```
+效果不太对， 
+```
+             setTimeout(function(){
+                siteWelcome.classList.remove('active')
+             },1000)
+
+             //添加offset类 
+              let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的任意标签
+              for(let i=0;i<specialTags.length;i++){
+                    specialTags[i].classList.add('offset')
+              }
+
+             window.onscroll = function(x){
+                if(window.scrollY > 0){
+                    topNavBar.classList.add('sticky')
+                }else{
+                    topNavBar.classList.remove('sticky')
+                }
+                let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的任意标签
+                let minIndex = 0
+                for(let i=0;i<specialTags.length;i++){
+                    if(Math.abs(specialTags[i].offsetTop - window.scrollY) < Math.abs(specialTags[minIndex].offsetTop - window.scrollY)){
+                        minIndex = i
+                    }
+                 }//minIndex就是离窗口顶部最近的元素
+                 //specialTags[minIndex].classList.add('animate')
+                 specialTags[minIndex].classList.remove('offset')
+                 
+```
+```
+[data-x].offset{
+    transform: translateY(100px);
+}
+[data-x]{
+    transform: translateY(0);
+    transition: all 0.5s;
+}
+.topNavBar {
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: all 1s;
+    color: #b7b7b7;
+}
+
+```
+但首章节“ 关于”没有反映，所以需要让li.classList.add('highlight')的操作在scroll滚动发生前就执行一次，将该部分整合成函数，先调用一次，再在window.onscroll = function(x){中复用一下。
+```
+             let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的任意标签
+              for(let i=0;i<specialTags.length;i++){
+                    specialTags[i].classList.add('offset')
+              }
+
+              slide()
+
+              window.onscroll = function(x){
+                if(window.scrollY > 0){
+                    topNavBar.classList.add('sticky')
+                }else{
+                    topNavBar.classList.remove('sticky')
+                }
+                slide()
+              }
+              
+              function slide(){
+                let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的任意标签
+                let minIndex = 0
+                for(let i=0;i<specialTags.length;i++){
+                    if(Math.abs(specialTags[i].offsetTop - window.scrollY) < Math.abs(specialTags[minIndex].offsetTop - window.scrollY)){
+                        minIndex = i
+                    }
+                }
+                specialTags[minIndex].classList.remove('offset')
+                let id = specialTags[minIndex].id
+                let a = document.querySelector('a[href="#' + id + '"]')  //例如id=='siteAbout',则对应的a标签'a[href="#siteAbout"]'
+                let li = a.parentNode
+                let brothersAndMe = li.parentNode.children
+                for(let i=0;i<brothersAndMe.length;i++){
+                    brothersAndMe[i].classList.remove('highlight')
+                }
+                li.classList.add('highlight')
+             }
+
+```
+优化
+```
+              //添加offset类 
+              let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的任意标签
+              for(let i=0;i<specialTags.length;i++){
+                    specialTags[i].classList.add('offset')
+              }
+              
+              setTimeout(function(){
+                slide()
+              },1000)
+
+              window.onscroll = function(x){
+                if(window.scrollY > 0){
+                    topNavBar.classList.add('sticky')
+                }else{
+                    topNavBar.classList.remove('sticky')
+                }
+                slide()
+              }
+              
+```
+## 技能部分进度条动态显示
