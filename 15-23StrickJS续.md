@@ -200,4 +200,160 @@ var tween = new TWEEN.Tween(coords)
                    }
                 }
 ```
+## 除点菜单页面动外增加相反功能
+1.第一步，先打出y坐标观察
+```
+             window.onscroll = function(x){
+                if(window.scrollY > 0){
+                    topNavBar.classList.add('sticky')
+                }else{
+                    topNavBar.classList.remove('sticky')
+                }
+                console.log(window.scrollY)
+             }
+```
+然后对页面中元素进行标记
+```
+<main>
+            <div data-x id="siteAbout" class="userCard">
+            ...
+</main>
+            <section data-x id="siteSkills" class="skills">
+            ...
+             </section>
+            <section data-x id="siteWorks" class="portfolio">
+            ...
+```
+获取三个标记的元素的offsetTop
+```
+                console.log(window.scrollY)
+                let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的标签
+                for(let i=0;i<specialTags.length;i++){
+                    console.log(specialTags[i].offsetTop)
+                }
+```
+```
+              window.onscroll = function(x){
+                if(window.scrollY > 0){
+                    topNavBar.classList.add('sticky')
+                }else{
+                    topNavBar.classList.remove('sticky')
+                }
+                console.log('window.scrollY')
+                console.log(window.scrollY)
+                let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的任意标签
+                for(let i=0;i<specialTags.length;i++){
+                    console.log('specialTags[i].offsetTop')
+                    console.log(specialTags[i].offsetTop)
+                }
+             }
+```
+可以在控制台观察到仅window.scrollY随滚动而变化，specialTags[i].offsetTop无变化
+2.思路：找出距离当前滚动距离最近的一个标签
+```
+             window.onscroll = function(x){
+                if(window.scrollY > 0){
+                    topNavBar.classList.add('sticky')
+                }else{
+                    topNavBar.classList.remove('sticky')
+                }
+                console.log('window.scrollY')
+                console.log(window.scrollY)
+                let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的任意标签
+                let minIndex = 0
+                for(let i=0;i<specialTags.length;i++){
+                    if(Math.abs(specialTags[i].offsetTop - window.scrollY) < Math.abs(specialTags[minIndex].offsetTop - window.scrollY)){
+                        minIndex = i
+                    }
+                    console.log(minIndex)
+                }
+             }
+```
+```
+           window.onscroll = function(x){
+                if(window.scrollY > 0){
+                    topNavBar.classList.add('sticky')
+                }else{
+                    topNavBar.classList.remove('sticky')
+                }
+                console.log('window.scrollY')
+                console.log(window.scrollY)
+                let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的任意标签
+                let minIndex = 0
+                for(let i=0;i<specialTags.length;i++){
+                    if(Math.abs(specialTags[i].offsetTop - window.scrollY) < Math.abs(specialTags[minIndex].offsetTop - window.scrollY)){
+                        minIndex = i
+                    }
+                    //console.log(minIndex)
+                }
+                specialTags[minIndex].classList.add('active')
+             }
+```
+我们把它找到后标识出来
+```
+/*h1,h2,h3,h4,h5,h6 {
+    font-weight: normal;
+} 新加CSS语句的地方之前一句*/
 
+[data-x].active{
+    outline: 10px solid red;
+}
+```
+```
+           window.onscroll = function(x){
+                if(window.scrollY > 0){
+                    topNavBar.classList.add('sticky')
+                }else{
+                    topNavBar.classList.remove('sticky')
+                }
+                console.log('window.scrollY')
+                console.log(window.scrollY)
+                let specialTags = document.querySelectorAll('[data-x]')  //含有data-x属性的任意标签
+                let minIndex = 0
+                for(let i=0;i<specialTags.length;i++){
+                    if(Math.abs(specialTags[i].offsetTop - window.scrollY) < Math.abs(specialTags[minIndex].offsetTop - window.scrollY)){
+                        minIndex = i
+                    }
+                    //console.log(minIndex)
+                }
+                for(let i=0;i<specialTags.length;i++){
+                    specialTags[i].classList.remove('active')
+                }
+                specialTags[minIndex].classList.add('active')
+             }
+```
+3.找对应的菜单栏标签
+```
+                specialTags[minIndex].classList.add('active')
+                let id = specialTags[minIndex].id
+                console.log(id)
+```
+```
+                specialTags[minIndex].classList.add('active')
+                let id = specialTags[minIndex].id
+                //console.log(id)
+                let a = document.querySelector('a[href="#' + id + '"]')  //例如id=='siteAbout',则对应的a标签'a[href="#siteAbout"]'
+                let li = a.parentNode
+                console.log(li)
+
+             }
+
+```
+
+4.找到后开始绑定对应事件
+```
+                specialTags[minIndex].classList.add('active')
+                let id = specialTags[minIndex].id
+                //console.log(id)
+                let a = document.querySelector('a[href="#' + id + '"]')  //例如id=='siteAbout',则对应的a标签'a[href="#siteAbout"]'
+                let li = a.parentNode
+                //console.log(li)
+                let brothersAndMe = li.parentNode.children
+                for(let i=0;i<brothersAndMe.length;i++){
+                    brothersAndMe[i].classList.remove('active')
+                }
+                li.classList.add('active')
+             }
+
+```
+滑动到相应章节页面顶部sticky的相应NavBar选项被点亮，功能实现；但是出现了二级菜单随之自动冒出的BUG 
