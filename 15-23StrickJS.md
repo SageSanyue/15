@@ -149,3 +149,172 @@ https://jsbin.com/pusugux/edit?html,css,js,output
     border-bottom: 3px solid #e06567;
 } */
 ```
+## 导航栏二级菜单
+1.li的a标签下加二级菜单
+加在a内外皆可，惯例加在a外边。
+```
+let aTags = document.getElementsByClassName('menuTrigger')
+             //console.log(aTags)
+             for(let i=0;i<aTags.length;i++){
+                 aTags[i].onmouseenter = function(x){
+                     //console.log('mouseenter')
+                     /*console.log(x.target)
+                     console.log(x.currentTarget)  //假如a标签内还有span标签，onclick事件监听上句打印span此句打印a
+                     */
+                     let a = x.currentTarget   //建议使用curenttarget不会出错 
+                     //console.log(a.nextSibling.nextSibling)
+                     let brother = a.nextSibling
+                     while(brother.nodeType === 3){    //找a的节点弟弟而非文本弟弟,或者改写成while(brother.tagName!=='UL')
+                        brother = brother.nextSibling
+                     }
+                     brother.classList.add('active')
+                 }
+                 aTags[i].onmouseleave = function(x){
+                    let a = x.currentTarget
+                    let brother = a.nextSibling
+                    while(brother.tagName !== 'UL'){
+                       brother = brother.nextSibling
+                    }
+                    brother.classList.remove('active')
+                 }
+           }
+```
+```
+.topNavBar .submenu{
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+
+}
+.topNavBar .submenu.active{
+    display: block;
+}
+.topNavBar .submenu > li{
+    white-space: nowrap;   /*二级菜单每一项不换行*/
+}
+
+               <li>
+                   <a class="menuTrigger" href="#">作品</a>
+                    <ul class="submenu">
+                        <li>作品1</li>
+                        <li>作品2</li>
+                        <li>作品3</li>
+                    </ul>
+                </li>
+               <li>
+                   <a class="menuTrigger" href="#">博客</a>
+                   <ul class="submenu">
+                        <li>博客1</li>
+                        <li>博客2</li>
+                        <li>博客3</li>
+                    </ul>
+                </li>
+```
+改进鼠标移开无法进一步点选二级菜单的bug:
+1.监听对象应该是a与ul的共同标签li
+```
+                <li class="menuTrigger">
+                   <a  href="#">作品</a>
+                    <ul class="submenu">
+                        <li>作品1</li>
+                        <li>作品2</li>
+                        <li>作品3</li>
+                    </ul>
+                </li>
+               <li class="menuTrigger">
+                   <a href="#">博客</a>
+                   <ul class="submenu">
+                        <li>博客1</li>
+                        <li>博客2</li>
+                        <li>博客3</li>
+                    </ul>
+                </li>
+```
+```
+//let aTags = document.getElementsByClassName('menuTrigger') 为改进BUG改进鼠标移开无法进一步点选二级菜单，监听对象应该是a与ul的共同标签li
+             let liTags = document.getElementsByClassName('menuTrigger')
+             //console.log(aTags)
+             //for(let i=0;i<aTags.length;i++){
+            for(let i=0;i<liTags.length;i++){
+                 //aTags[i].onmouseenter = function(x){
+                liTags[i].onmouseenter = function(x){
+                     //console.log('mouseenter')
+                     /*console.log(x.target)
+                     console.log(x.currentTarget)  //假如a标签内还有span标签，onclick事件监听上句打印span此句打印a
+                     */
+                     //let a = x.currentTarget   //建议使用curenttarget不会出错 
+                    let li = x.currentTarget
+                     //console.log(a.nextSibling.nextSibling)
+                     //let brother = a.nextSibling
+                     let brother = li.getElementsByTagName('ul')[0]
+                     /*while(brother.nodeType === 3){    //找a的节点弟弟而非文本弟弟,或者改写成while(brother.tagName!=='UL')
+                        brother = brother.nextSibling
+                     }*/
+                     brother.classList.add('active')
+                 }
+                 //aTags[i].onmouseleave = function(x){
+                liTags[i].onmouseleave = function(x){
+                    let li = x.currentTarget
+                    let brother = li.getElementsByTagName('ul')[0]
+                    //while(brother.tagName !== 'UL'){
+                    //   brother = brother.nextSibling
+                    //}
+                    brother.classList.remove('active')
+                 }
+             }
+进一步修改
+```
+/*.topNavBar .submenu.active{
+    display: block;
+}*/
+.topNavBar li.active > .submenu{
+    display: block;
+}
+
+ let liTags = document.getElementsByClassName('menutrigger')
+             for(){
+                 liTags[i].onmouseenter = function(x){
+                    x.currentTarget.classList.add('active')
+                 }
+                 liTags[i].onmouseleave = function(){
+                     x.currentTarget.classList.remove('active')
+                 }
+}
+```
+```
+let liTags = document.querySelectorAll('nav.menu > ul >li')
+             for(let i=0;i<liTags.length;i++){
+                 liTags[i].onmouseenter = function(x){
+                    x.currentTarget.classList.add('active')
+                 }
+                 liTags[i].onmouseleave = function(x){
+                     x.currentTarget.classList.remove('active')
+                 }
+}
+
+          <nav class="menu" style="float: right;">
+           <ul class="clearfix">
+               <li><a href="#">关于</a></li>
+               <li><a href="#">技能</a></li>
+               <li class="menuTrigger">
+                   <a  href="#">作品</a>
+                    <ul class="submenu">
+                        <li>作品1</li>
+                        <li>作品2</li>
+                        <li>作品3</li>
+                    </ul>
+                </li>
+               <li class="menuTrigger">
+                   <a href="#">博客</a>
+                   <ul class="submenu">
+                        <li>博客1</li>
+                        <li>博客2</li>
+                        <li>博客3</li>
+                    </ul>
+                </li>
+               <li><a href="#">日历</a></li>
+               <li><a href="#">联系方式</a></li>
+               <li><a href="#">其他</a></li>
+           </ul>
+           </nav>  
