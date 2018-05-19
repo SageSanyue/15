@@ -322,3 +322,4 @@ let liTags = document.querySelectorAll('nav.menu > ul >li')
            </ul>
            </nav>  
 ```
+总结：解决一个问题的关键是立即着手做，然后不断地试错修改，直到优化。
