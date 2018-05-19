@@ -71,3 +71,48 @@ for(let i=0;i<aTags.length;i++){
      window.scrollTo(0,top-80)     //滑动到X方向不变Y方向减去80
 }
 ```
+## 点击导航栏相应跳转较生硬的优化
+与滚动条有关的动画无法用CSS实现，只能用就是js实现。
+一个简易的JS动画教程：http://js.jirengu.com/kinuv/1/edit?html,js,output
+```
+<body>
+  <div id="div1"></div>
+</body>
+
+div1.style.position = 'relative'
+div1.style.left = 0
+
+var n=0
+var id = setInterval(()=>{
+  n = n + 1
+  div1.style.left = n + 'px'
+  if(n>=200){
+    window.clearInterval(id)
+  }
+},40)
+```
+```
+                   let n = 25 //一共动的次数
+                   let duration = 500 / n      //动一次多长时间
+                   let currentTop = window.scrollY
+                   let targetTop = top-80
+                   let distance = (targetTop - currentTop)/n
+                   let i = 0
+                   /*
+                   console.log(targetTop)
+                   console.log(currentTop)  //console.log调试大法
+                   console.log(n)
+                   console.log(distance)
+                   */
+                   var id = setInterval(()=>{
+                    if(i === n){
+                        window.clearInterval(id)
+                        return
+                    }
+                    i=i+1
+                    window.scrollTo(0,currentTop + distance * i)
+                    //window.scrollTo(0,targetTop + distance*i)
+                   },duration)
+```
+## 优化之缓动函数
+
