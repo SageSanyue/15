@@ -263,6 +263,8 @@ let aTags = document.getElementsByClassName('menuTrigger')
                     brother.classList.remove('active')
                  }
              }
+```
+
 进一步修改
 ```
 /*.topNavBar .submenu.active{
@@ -282,6 +284,7 @@ let aTags = document.getElementsByClassName('menuTrigger')
                  }
 }
 ```
+
 ```
 let liTags = document.querySelectorAll('nav.menu > ul >li')
              for(let i=0;i<liTags.length;i++){
@@ -318,3 +321,4 @@ let liTags = document.querySelectorAll('nav.menu > ul >li')
                <li><a href="#">其他</a></li>
            </ul>
            </nav>  
+```
