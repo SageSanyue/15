@@ -115,4 +115,89 @@ var id = setInterval(()=>{
                    },duration)
 ```
 ## 优化之缓动函数
+1.去https://cdnjs.com  输入tween,在Library里找到tween.js,复制 Link。 https://github.com/tweenjs/tween.js/blob/master/docs/user_guide.md
+
+http://js.jirengu.com/wilar/1/edit?html,js,output
+```
+function animate(time){
+  requestAnimationFrame(animate);
+  TWEEN.update(time);
+}
+requestAnimationFrame(animate);
+var coords = {x:0};
+var tween = new TWEEN.Tween(coords)
+         .to({x:1000},1000)
+         .easing(TWEEN.Easing.Quadratic.In)
+         .onUpdate(function(){
+           console.log(coords.x);
+         })
+         .start();
+```
+代码片段插入到for(let i=0;i<aTags.length;i++){前，
+```
+           let aTags = document.querySelectorAll('nav.menu > ul > li > a')
+             //console.log(aTags)
+
+             function animate(time){
+                requestAnimationFrame(animate);
+                TWEEN.update(time);
+            }
+            requestAnimationFrame(animate);
+    
+             for(let i=0;i<aTags.length;i++){
+                aTags[i].onclick = function(x){
+                   x.preventDefault()  //阻止默认事件
+                   let a = x.currentTarget
+                   let href = a.getAttribute('href')   //'#siteAbout'
+                   let element = document.querySelector(href)
+                   let top = element.offsetTop
+
+                    let currentTop = window.scrollY
+                    let targetTop = top-80
+                    var coords = {y:currentTop};
+                    var tween = new TWEEN.Tween(coords)
+                    .to({y:targetTop},1000)
+                    .easing(TWEEN.Easing.Quadratic.In)
+                    .onUpdate(function(){
+                         window.scrollTo(0,coords.y)
+                    })
+                    .start();
+                  }
+                 }
+```
+随后尝试改.easing(TWEEN.Easing.Quadratic.In)为.easing(TWEEN.Easing.Quadratic.InOut)//淡入淡出
+```
+             let aTags = document.querySelectorAll('nav.menu > ul > li > a')
+
+             function animate(time){
+                requestAnimationFrame(animate);
+                TWEEN.update(time);
+            }
+            requestAnimationFrame(animate);      //请求动画帧率
+    
+             for(let i=0;i<aTags.length;i++){
+                aTags[i].onclick = function(x){
+                   x.preventDefault()  //阻止默认事件
+                   let a = x.currentTarget
+                   let href = a.getAttribute('href')   //'#siteAbout'
+                   let element = document.querySelector(href)
+                   let top = element.offsetTop
+
+                    let currentTop = window.scrollY
+                    let targetTop = top-80
+                    let s = targetTop - currentTop
+                    var coords = {y:currentTop}
+                    var t = Math.abs((s/100)*300)   //距离s可以为负，但时间不能为负
+                    //var t = (s/100)*300
+                    if(t>500){t = 500}
+                    var tween = new TWEEN.Tween(coords)
+                    .to({y:targetTop},t)
+                    .easing(TWEEN.Easing.Quadratic.InOut)   //淡入淡出
+                    .onUpdate(function(){
+                         window.scrollTo(0,coords.y)
+                    })
+                    .start();
+                   }
+                }
+```
 
